@@ -12,6 +12,10 @@ void iram_write_register(struct cpu_state* cpu, enum iram_register register, uin
 uint8_t iram_read_bit(struct cpu_state* cpu, uint8_t bit_address);
 void iram_write_bit(struct cpu_state* cpu, uint8_t bit_address, bool value);
 
+// Special function registers 0x80-0xFF
+uint8_t sfr_read_register(struct cpu_state* cpu, uint8_t sfr_address);
+void sfr_write_register(struct cpu_state* cpu, uint8_t sfr_address, uint8_t value);
+
 // External memory
 uint8_t memory_read(uint8_t* memory, uint16_t address);
 void memory_write(uint8_t* memory, uint16_t address, uint8_t value);

@@ -20,39 +20,43 @@ enum iram_register {
     REGISTER_R7
 };
 
-struct cpu_state {
-    uint16_t pc; // Program Counter
+enum sfr_register {
+    REGISTER_P0   = 0x80,  // Port 0
+    REGISTER_SP   = 0x81,  // Stack pointer
+    REGISTER_DPL  = 0x82,  // Lower 8 bits of DPTR
+    REGISTER_DPH  = 0x83,  // Higher 8 bits of DPTR
+    REGISTER_PCON = 0x87,  // (SMOD - - - GF1 GF0 PD IDL) Power control register
+    REGISTER_TCON = 0x88,  // (TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0) Timer 0/1 control register
+    REGISTER_TMOD = 0x89,  // (GATE C/T M1 M0 GATE C/T M1 M0) Timer operation mode
+    REGISTER_TL0  = 0x8A,  // Lower 8 bits of Timer 0
+    REGISTER_TL1  = 0x8B,  // Lower 8 bits of Timer 1
+    REGISTER_TH0  = 0x8C,  // Higher 8 bits of Timer 0
+    REGISTER_TH1  = 0x8D,  // Higher 8 bits of Timer 1
+    REGISTER_P1   = 0x90,  // Port 1
+    REGISTER_SCON = 0x98,  // (SM0 SM1 SM2 REN TB8 RB8 TI RI) Serial I/O control
+    REGISTER_SBUF = 0x99,  // Serial I/O buffer
+    REGISTER_P2   = 0xA0,  // Port 2
+    REGISTER_IE   = 0xA8,  // (EA - - ES ET1 EX1 ET0 EX0) Interrupt Enable
+    REGISTER_P3   = 0xB0,  // (/RD /WR T1 T0 /INT1 /INT0 TxD RxD) Port 3
+    REGISTER_IP   = 0xC0,  // (- - - PS PT1 PX1 PT0 PX0) Interrupt Priority
+    REGISTER_PSW  = 0xD0,  // (CY AC F0 RS1 RS0 OV - P) Program Status Word
+    REGISTER_ACC  = 0xE0,  // Accumulator
+    REGISTER_B    = 0xF0   // Additional register (used for MUL/DIV)
+};
 
-    uint8_t ram[0x80]; // IRAM
+struct cpu_state {
+    uint16_t pc;           // Program Counter
+
+    uint8_t ram[0x80];     // IRAM
     /* 0x00-0x7F Label Description
     *  0x00-0x1F R0-R7 Register Windows
     *  0x20-0x2F       128 1-bit registers (00-7F)
     *  0x30-0x7F       General purpose RAM
     */
 
-    uint8_t sfr[0x80]; // SFR
-    /* 0x80–0xFF Label (Most to least significant bit)     Description
-    *  0x80      P0                                        Port 0
-    *  0x81      SP                                        Stack pointer
-    *  0x82      DPL                                       Lower 8 bits of DPTR
-    *  0x83      DPH                                       Higher 8 bits of DPTR
-    *  0x87      PCON  (SMOD - - - GF1 GF0 PD IDL)         Power control register
-    *  0x88      TCON  (TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0)   Timer 0/1 control register
-    *  0x89      TMOD  (GATE C/T M1 M0 GATE C/T M1 M0)     Timer operation mode
-    *  0x8A      TL0                                       Lower 8 bits of Timer 0
-    *  0x8B      TL1                                       Lower 8 bits of Timer 1
-    *  0x8C      TH0                                       Higher 8 bits of Timer 0
-    *  0x8D      TH1                                       Higher 8 bits of Timer 1
-    *  0x90      P1                                        Port 1
-    *  0x98      SCON  (SM0 SM1 SM2 REN TB8 RB8 TI RI)     Serial I/O control
-    *  0x99      SBUF                                      Serial I/O buffer
-    *  0xA0      P2                                        Port 2
-    *  0xA8      IE    (EA - - ES ET1 EX1 ET0 EX0)         Interrupt Enable
-    *  0xB0      P3    (/RD /WR T1 T0 /INT1 /INT0 TxD RxD) Port 3
-    *  0xC0      IP    (- - - PS PT1 PX1 PT0 PX0)          Interrupt Priority
-    *  0xD0      PSW   (CY AC F0 RS1 RS0 OV - P)           Program Status Word
-    *  0xE0      ACC                                       Accumulator
-    *  0xF0      B                                         Additional register (used for MUL/DIV)
+    uint8_t sfr[0x80];     // SFR
+    /* 0x80-0xFF Special Function Registers 
+    *  Addresses divisible by 8 are bit-addressable
     */
 };  
 
