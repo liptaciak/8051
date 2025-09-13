@@ -4,8 +4,8 @@
 #include "cpu.h"
 #include "memory.h"
 
-#define MEMORY_SIZE 65536
-static uint8_t memory[MEMORY_SIZE];
+#define MEMORY_SIZE 0x10000
+static uint8_t memory[MEMORY_SIZE]; // XRAM
 
 int main(int argc, char** argv) {
     struct cpu_state cpu;

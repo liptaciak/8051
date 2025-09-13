@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void memory_read(uint8_t* memory, uint16_t address, uint8_t size);
-void memory_write(uint8_t* memory, uint16_t address, uint8_t value, uint8_t size);
+uint8_t memory_read(uint8_t* memory, uint16_t address);
+void memory_write(uint8_t* memory, uint16_t address, uint8_t value);
 
 #endif /* ! __MEMORY_H__ */
