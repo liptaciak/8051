@@ -5,5 +5,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(8051 LANGUAGES C)
 
-add_executable(8051 src/main.c)
+add_executable(8051 
+    src/main.c
+    src/cpu.c
+    src/memory.c
+)
+
 target_include_directories(8051 PRIVATE include)
