@@ -7,7 +7,7 @@
  * Since all fields are already set to 0
  * on initalization, we only initalize non-zero values
  */
-void cpu_reset(struct cpu_state* cpu) {
+void cpu_reset(struct cpu* cpu) {
     sfr_write_register(cpu, REGISTER_SP, 0x07);
 
     sfr_write_register(cpu, REGISTER_P0, 0xFF);
@@ -16,6 +16,6 @@ void cpu_reset(struct cpu_state* cpu) {
     sfr_write_register(cpu, REGISTER_P3, 0xFF);
 }
 
-void cpu_execute_program(struct cpu_state* cpu, uint8_t* memory) {
+void cpu_execute_program(struct cpu* cpu, uint8_t* memory) {
     return;
 }

@@ -6,7 +6,7 @@
 #include "memory.h"
 
 #define MEMORY_SIZE 0x10000
-static uint8_t memory[MEMORY_SIZE];
+static uint8_t xram[MEMORY_SIZE];
 
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
 
     fclose(program);
 
-    struct cpu_state cpu = {0};
+    struct cpu cpu = {0};
     cpu_reset(&cpu);
     
-    cpu_execute_program(&cpu, memory);
+    cpu_execute_program(&cpu, xram);
     return 0;
 }

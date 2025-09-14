@@ -9,6 +9,7 @@ add_executable(8051
     src/main.c
     src/cpu.c
     src/memory.c
+    src/instructions.c
 )
 
 target_include_directories(8051 PRIVATE include)

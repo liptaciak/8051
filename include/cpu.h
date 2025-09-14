@@ -44,7 +44,7 @@ enum sfr_reg {
     REGISTER_B    = 0xF0   // Additional register (used for MUL/DIV)
 };
 
-struct cpu_state {
+struct cpu {
     uint16_t pc;           // Program Counter
 
     uint8_t ram[0x80];     // IRAM
@@ -139,7 +139,7 @@ enum psw {
     PSW_CY  =      1 << 7  // Carry flag
 };
 
-void cpu_reset(struct cpu_state* cpu);
-void cpu_execute_program(struct cpu_state* cpu, uint8_t* memory);
+void cpu_reset(struct cpu* cpu);
+void cpu_execute_program(struct cpu* cpu, uint8_t* memory);
 
 #endif /* ! __CPU_H__ */
