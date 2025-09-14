@@ -39,8 +39,8 @@ int main(int argc, char** argv) {
 
     fclose(program);
 
-    struct cpu_state cpu = {};
-    // TODO: Reset sequence
+    struct cpu_state cpu = {0};
+    cpu_reset(&cpu);
     
     cpu_execute_program(&cpu, memory);
     return 0;

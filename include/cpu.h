@@ -5,11 +5,11 @@
 #include <stdbool.h>
 
 /*
-* General purpose registers
-* 32 of these registers are stored
-* in 4 register windows inside of IRAM
-*/
-enum iram_register {
+ * General purpose registers
+ * 32 of these registers are stored
+ * in 4 register windows inside of IRAM
+ */
+enum iram_reg {
     REGISTER_R0,
     REGISTER_R1,
     REGISTER_R2,
@@ -20,26 +20,26 @@ enum iram_register {
     REGISTER_R7
 };
 
-enum sfr_register {
+enum sfr_reg {
     REGISTER_P0   = 0x80,  // Port 0
     REGISTER_SP   = 0x81,  // Stack pointer
     REGISTER_DPL  = 0x82,  // Lower 8 bits of DPTR
     REGISTER_DPH  = 0x83,  // Higher 8 bits of DPTR
-    REGISTER_PCON = 0x87,  // (SMOD - - - GF1 GF0 PD IDL) Power control register
-    REGISTER_TCON = 0x88,  // (TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0) Timer 0/1 control register
-    REGISTER_TMOD = 0x89,  // (GATE C/T M1 M0 GATE C/T M1 M0) Timer operation mode
+    REGISTER_PCON = 0x87,  // Power control register
+    REGISTER_TCON = 0x88,  // Timer 0/1 control register
+    REGISTER_TMOD = 0x89,  // Timer operation mode
     REGISTER_TL0  = 0x8A,  // Lower 8 bits of Timer 0
     REGISTER_TL1  = 0x8B,  // Lower 8 bits of Timer 1
     REGISTER_TH0  = 0x8C,  // Higher 8 bits of Timer 0
     REGISTER_TH1  = 0x8D,  // Higher 8 bits of Timer 1
     REGISTER_P1   = 0x90,  // Port 1
-    REGISTER_SCON = 0x98,  // (SM0 SM1 SM2 REN TB8 RB8 TI RI) Serial I/O control
+    REGISTER_SCON = 0x98,  // Serial I/O control
     REGISTER_SBUF = 0x99,  // Serial I/O buffer
     REGISTER_P2   = 0xA0,  // Port 2
-    REGISTER_IE   = 0xA8,  // (EA - - ES ET1 EX1 ET0 EX0) Interrupt Enable
-    REGISTER_P3   = 0xB0,  // (/RD /WR T1 T0 /INT1 /INT0 TxD RxD) Port 3
-    REGISTER_IP   = 0xC0,  // (- - - PS PT1 PX1 PT0 PX0) Interrupt Priority
-    REGISTER_PSW  = 0xD0,  // (CY AC F0 RS1 RS0 OV - P) Program Status Word
+    REGISTER_IE   = 0xA8,  // Interrupt Enable
+    REGISTER_P3   = 0xB0,  // Port 3
+    REGISTER_IP   = 0xC0,  // Interrupt Priority
+    REGISTER_PSW  = 0xD0,  // Program Status Word
     REGISTER_ACC  = 0xE0,  // Accumulator
     REGISTER_B    = 0xF0   // Additional register (used for MUL/DIV)
 };
@@ -49,15 +49,15 @@ struct cpu_state {
 
     uint8_t ram[0x80];     // IRAM
     /* 0x00-0x7F Label Description
-    *  0x00-0x1F R0-R7 Register Windows
-    *  0x20-0x2F       128 1-bit registers (00-7F)
-    *  0x30-0x7F       General purpose RAM
-    */
+     *  0x00-0x1F R0-R7 Register Windows
+     *  0x20-0x2F       128 1-bit registers (00-7F)
+     *  0x30-0x7F       General purpose RAM
+     */
 
     uint8_t sfr[0x80];     // SFR
     /* 0x80-0xFF Special Function Registers 
-    *  Addresses divisible by 8 are bit-addressable
-    */
+     *  Addresses divisible by 8 are bit-addressable
+     */
 };  
 
 enum pcon {
@@ -139,6 +139,7 @@ enum psw {
     PSW_CY  =      1 << 7  // Carry flag
 };
 
+void cpu_reset(struct cpu_state* cpu);
 void cpu_execute_program(struct cpu_state* cpu, uint8_t* memory);
 
 #endif /* ! __CPU_H__ */
