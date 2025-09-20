@@ -9,7 +9,7 @@
  * 32 of these registers are stored
  * in 4 register windows inside of IRAM
  */
-enum iram_reg {
+typedef enum {
     REGISTER_R0,
     REGISTER_R1,
     REGISTER_R2,
@@ -18,9 +18,9 @@ enum iram_reg {
     REGISTER_R5,
     REGISTER_R6,
     REGISTER_R7
-};
+} iram_reg_t;
 
-enum sfr_reg {
+typedef enum {
     REGISTER_P0   = 0x80,  // Port 0
     REGISTER_SP   = 0x81,  // Stack pointer
     REGISTER_DPL  = 0x82,  // Lower 8 bits of DPTR
@@ -42,9 +42,9 @@ enum sfr_reg {
     REGISTER_PSW  = 0xD0,  // Program Status Word
     REGISTER_ACC  = 0xE0,  // Accumulator
     REGISTER_B    = 0xF0   // Additional register (used for MUL/DIV)
-};
+} sfr_reg_t;
 
-struct cpu {
+typedef struct {
     uint16_t pc;           // Program Counter
 
     uint8_t ram[0x80];     // IRAM
@@ -58,17 +58,17 @@ struct cpu {
     /* 0x80-0xFF Special Function Registers 
      *  Addresses divisible by 8 are bit-addressable
      */
-};  
+} cpu_t;  
 
-enum pcon {
+typedef enum {
     PCON_IDL  =    1 << 0, // Idle mode
     PCON_PD   =    1 << 1, // Power down
     PCON_GF0  =    1 << 2, // General purpose flag bit 0
     PCON_GF1  =    1 << 3, // General purpose flag bit 1
     PCON_SMOD =    1 << 7  // Double baud rate
-};
+} pcon_t;
 
-enum tcon {
+typedef enum {
     TCON_IT0 =     1 << 0, // Interrupt 0 type control
     TCON_IE0 =     1 << 1, // External interrupt 0 edge (Hardware)
     TCON_IT1 =     1 << 2, // Interrupt 1 type control
@@ -77,9 +77,9 @@ enum tcon {
     TCON_TF0 =     1 << 5, // Timer 0 overflow (Hardware)
     TCON_TR1 =     1 << 6, // Timer 1 run control
     TCON_TF1 =     1 << 7  // Timer 1 overflow (Hardware)
-};
+} tcon_t;
 
-enum tmod {
+typedef enum {
     TMOD_T0_M0   = 1 << 0, // Timer 0 selection bit 0
     TMOD_T0_M1   = 1 << 1, // Timer 0 selection bit 1
     TMOD_T0_CT   = 1 << 2, // Timer 0 timer or Counter selector
@@ -88,9 +88,9 @@ enum tmod {
     TMOD_T1_M1   = 1 << 5, // Timer 1 selection bit 1
     TMOD_T1_CT   = 1 << 6, // Timer 1 timer or Counter selector
     TMOD_T1_GATE = 1 << 7  // Timer 1 start/stop timers by hardware
-};
+} tmod_t;
 
-enum scon {
+typedef enum {
     SCON_RI  =     1 << 0, // Set when a byte was received and placed in SBUF
     SCON_TI  =     1 << 1, // Set after finishing transfer of 8-bit character
     SCON_RB8 =     1 << 2, // Receive bit 8
@@ -99,18 +99,18 @@ enum scon {
     SCON_SM2 =     1 << 5, // Enables multiprocessor communication in modes 2 and 3
     SCON_SM1 =     1 << 6, // Serial mode selection bit 0
     SCON_SM0 =     1 << 7  // Serial mode selection bit 1
-};
+} scon_t;
 
-enum ie {
+typedef enum {
     IE_EX0 =       1 << 0, // Enable/Disable external interrupt 0
     IE_ET0 =       1 << 1, // Enable/Disable timer 0 overflow interrupt
     IE_EX1 =       1 << 2, // Enable/Disable external interrupt 1
     IE_ET1 =       1 << 3, // Enable/Disable timer 1 overflow interrupt
     IE_ES  =       1 << 4, // Enable/Disable serial port interrupt
     IE_EA  =       1 << 7  // Enable/Disable global interrupts
-};
+} ie_t;
 
-enum p3 {
+typedef enum {
     P3_RXD  =      1 << 0, // Received serial data signal
     P3_TXD  =      1 << 1, // Transmits serial data signal
     P3_INT0 =      1 << 2, // External interrupt 0 signal
@@ -119,17 +119,17 @@ enum p3 {
     P3_T1   =      1 << 5, // External input to timer 1 signal
     P3_WR   =      1 << 6, // External memory write signal
     P3_RD   =      1 << 7  // External memory read signal
-};
+} p3_t;
 
-enum ip {
+typedef enum {
     IP_PX0 =       1 << 0, // Defines external interrupt 0 priority level
     IP_PT0 =       1 << 1, // Defines timer 0 overflow interrupt priority level
     IP_PX1 =       1 << 2, // Defines external interrupt 1 priority level
     IP_PT1 =       1 << 3, // Defines timer 1 overflow interrupt priority level
     IP_PS  =       1 << 4  // Defines serial port interrupt priority level
-};
+} ip_t;
 
-enum psw {
+typedef enum {
     PSW_P   =      1 << 0, // Parity flag
     PSW_OV  =      1 << 2, // Overflow flag
     PSW_RS0 =      1 << 3, // Register bank select bit 0
@@ -137,9 +137,9 @@ enum psw {
     PSW_F0  =      1 << 5, // General purpose flag bit
     PSW_AC  =      1 << 6, // Auxiliary carry flag
     PSW_CY  =      1 << 7  // Carry flag
-};
+} psw_t;
 
-void cpu_reset(struct cpu* cpu);
-void cpu_execute_program(struct cpu* cpu, uint8_t* memory);
+void cpu_reset(cpu_t *cpu);
+int cpu_execute_program(cpu_t *cpu, uint8_t *xram);
 
 #endif /* ! __CPU_H__ */

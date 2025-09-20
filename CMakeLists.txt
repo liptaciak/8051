@@ -12,4 +12,8 @@ add_executable(8051
     src/instructions.c
 )
 
+target_sources(8051 PRIVATE
+    src/instructions/nop.c
+)
+
 target_include_directories(8051 PRIVATE include)

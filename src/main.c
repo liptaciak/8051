@@ -8,7 +8,7 @@
 #define MEMORY_SIZE 0x10000
 static uint8_t xram[MEMORY_SIZE];
 
-int main(int argc, char** argv) {
+int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <program>\n", argv[0]);
         return EXIT_FAILURE;
@@ -30,18 +30,16 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    size_t read = fread(memory, 1, filesize, program);
+    size_t read = fread(xram, 1, filesize, program);
     if (read != filesize) {
         fprintf(stderr, "Failed to read entire file (read %zu bytes)\n", read);
         fclose(program);
         return EXIT_FAILURE;
     }
-
     fclose(program);
 
-    struct cpu cpu = {0};
+    cpu_t cpu = {0};
     cpu_reset(&cpu);
     
-    cpu_execute_program(&cpu, xram);
-    return 0;
+    return cpu_execute_program(&cpu, xram);
 }
