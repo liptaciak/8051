@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
+#include "gui.h"
 #include "cpu.h"
 #include "memory.h"
 
@@ -9,8 +11,17 @@
 static uint8_t xram[MEMORY_SIZE];
 
 int main(int argc, char *argv[]) {
+    if (argc > 1 && !strcmp(argv[1], "--gui")) {
+#ifdef USE_GUI
+        return gui_run();
+#else
+        fprintf(stderr, "This build does not support GUI. Rebuild with -DUSE_GUI=ON\n");
+        return EXIT_FAILURE;
+#endif
+    }
+
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s <program>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <program>\nOr use --gui for user interface.\n", argv[0]);
         return EXIT_FAILURE;
     }
 

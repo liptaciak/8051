@@ -1,6 +1,8 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
-        "cpu.h": "c"
+        "cpu.h": "c",
+        "memory.h": "c",
+        "nop.h": "c"
     }
 }

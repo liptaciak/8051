@@ -4,7 +4,11 @@
 #include <stdint.h>
 #include "cpu.h"
 
-// General purpose registers R0-R7
+// Internal memory
+uint8_t iram_read(cpu_t *cpu, uint8_t address);
+void iram_write(cpu_t *cpu, uint8_t address, uint8_t value);
+
+// Helper for general purpose registers R0-R7
 uint8_t iram_read_register(cpu_t *cpu, iram_reg_t register);
 void iram_write_register(cpu_t *cpu, iram_reg_t register, uint8_t value);
 

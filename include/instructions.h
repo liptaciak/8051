@@ -4,9 +4,6 @@
 #include <stdint.h>
 
 #include "cpu.h"
-#include "instructions/nop.h"
-
-#define INSTRUCTION_COUNT 0x100
 
 typedef enum {
 	ADDRESSING_IMMEDIATE,         // Operand value directly in instruction
@@ -17,8 +14,14 @@ typedef enum {
 	ADDRESSING_IMPLICIT           // Operand is implied by the instruction
 } addressing_mode_t;
 
+#include "instructions/nop.h"
+#include "instructions/mov.h"
+
+#define INSTRUCTION_COUNT 0x100
+
 typedef struct {
-	void (*implementation)(cpu_t *, uint8_t *, uint8_t *);
+	// Opcode and addressing mode might not be needed
+	void (*implementation)(cpu_t *, uint8_t, uint8_t *);
 	addressing_mode_t addressing_mode;
 } instruction_t;
 
