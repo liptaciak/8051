@@ -42,6 +42,16 @@ void sfr_write_register(cpu_t *cpu, sfr_reg_t reg, uint8_t value) {
 
 // TODO: SFR bit registers
 
+uint8_t memory_read(cpu_t *cpu, uint8_t address) {
+    if (address < 0x80) {
+        return iram_read(cpu, address);
+    } else if (address >= 0x80 && address <= 0xFF) {
+        return sfr_read_register(cpu, address);
+    }
+
+    return 0;
+}
+
 uint8_t xram_read(uint8_t *xram, uint16_t address) {
     return xram[address];
 }

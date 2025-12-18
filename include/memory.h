@@ -16,6 +16,9 @@ void iram_write_register(cpu_t *cpu, iram_reg_t register, uint8_t value);
 uint8_t sfr_read_register(cpu_t *cpu, sfr_reg_t register);
 void sfr_write_register(cpu_t *cpu, sfr_reg_t register, uint8_t value);
 
+// Helper function to read from any internal memory region
+uint8_t memory_read(cpu_t *cpu, uint8_t address);
+
 // External memory
 uint8_t xram_read(uint8_t *memory, uint16_t address);
 void xram_write(uint8_t *memory, uint16_t address, uint8_t value);

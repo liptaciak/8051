@@ -25,9 +25,6 @@ int cpu_execute_program(cpu_t *cpu, uint8_t *xram) {
     uint8_t opcode;
     uint8_t operand;
 
-    iram_reg_t reg;
-    uint8_t addr;
-
     while (true) {
         opcode = xram_read(xram, cpu->pc);
         instruction = instructions[opcode];
@@ -37,45 +34,57 @@ int cpu_execute_program(cpu_t *cpu, uint8_t *xram) {
 			return EXIT_FAILURE;
 		}
 
-        printf("0x%02x | PC: 0x%04x\n", opcode, cpu->pc);
+        printf("\n0x%02x | PC: 0x%04x\n", opcode, cpu->pc);
         
         switch (instruction.addressing_mode) {
+            case ADDRESSING_IMPLICIT:
+                instruction.implementation(cpu, opcode, nullptr, xram);
+                break;
+
             case ADDRESSING_IMMEDIATE:
                 operand = xram_read(xram, ++cpu->pc);
-
-                instruction.implementation(cpu, operand, xram); 
+                instruction.implementation(cpu, opcode, &operand, xram); 
                 break;
-            case ADDRESSING_REGISTER:
-                reg = opcode & 0b111; // R0-R7
-                operand = iram_read_register(cpu, reg);
 
-                instruction.implementation(cpu, operand, xram);
-                break;
             case ADDRESSING_DIRECT:
-                addr = xram_read(xram, ++cpu->pc);
-
-                if (addr >= 0x80) {
-                    operand = sfr_read_register(cpu, addr);
-                } else {
-                    operand = iram_read(cpu, addr);
-                }
-
-                instruction.implementation(cpu, operand, xram);
+                operand = xram_read(xram, ++cpu->pc);
+                instruction.implementation(cpu, opcode, &operand, xram);
                 break;
-            case ADDRESSING_REGISTER_INDIRECT:
-                reg = opcode & 0b1; // R0 or R1
-                addr = iram_read_register(cpu, reg);
-                operand = xram_read(xram, (uint16_t)addr);
 
-                instruction.implementation(cpu, operand, xram);
+            case ADDRESSING_REGISTER: {
+                iram_reg_t reg = opcode & 0b111; // R0-R7
+
+                /* 
+                 * We don't know the destination but the only possible sources 
+                 * are R0-R7 registers or the A register
+                 */
+                operand = iram_read_register(cpu, reg);
+                instruction.implementation(cpu, opcode, &operand, xram);
                 break;
+            }
+
+            case ADDRESSING_REGISTER_INDIRECT: {
+                iram_reg_t reg = opcode & 0b1; // R0 or R1
+
+                /* 
+                 * We don't know the destination but the only possible sources 
+                 * are R0 or R1 registers or the A register
+                 */
+                operand = iram_read_register(cpu, reg);
+                instruction.implementation(cpu, opcode, &operand, xram);
+                break;
+            }
+
+            case ADDRESSING_BIT:
+                fprintf(stderr, "Unimplemented instruction: %02x at %04x\n", opcode, cpu->pc);
+			    return EXIT_FAILURE;
+
             case ADDRESSING_INDEXED:
-                break;
-            case ADDRESSING_IMPLICIT:
-                instruction.implementation(cpu, 0, xram);
-                break;
+                fprintf(stderr, "Unimplemented instruction: %02x at %04x\n", opcode, cpu->pc);
+			    return EXIT_FAILURE;
         }
         cpu->pc++;
     }
+    
     return EXIT_SUCCESS;
 }

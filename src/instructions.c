@@ -1,21 +1,28 @@
 #include "instructions.h"
 
-/* 
- * R0 = 000
- * R1 = 001
- * R2 = 010
- * R3 = 011
- * R4 = 100
- * R5 = 101
- * R6 = 110
- * R7 = 111
- */
-
 instruction_t instructions[INSTRUCTION_COUNT] = {
     // NOP
     [0x00] = {nop, ADDRESSING_IMPLICIT},
     // MOV A, #value
     [0x74] = {mova, ADDRESSING_IMMEDIATE},
+    // MOV Rn, #value
+    [0x78] = {movr, ADDRESSING_IMMEDIATE},
+    [0x79] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7A] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7B] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7C] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7D] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7E] = {movr, ADDRESSING_IMMEDIATE},
+    [0x7F] = {movr, ADDRESSING_IMMEDIATE},
+    // MOV Rn, adr
+    [0xA8] = {movr, ADDRESSING_DIRECT},
+    [0xA9] = {movr, ADDRESSING_DIRECT},
+    [0xAA] = {movr, ADDRESSING_DIRECT},
+    [0xAB] = {movr, ADDRESSING_DIRECT},
+    [0xAC] = {movr, ADDRESSING_DIRECT},
+    [0xAD] = {movr, ADDRESSING_DIRECT},
+    [0xAE] = {movr, ADDRESSING_DIRECT},
+    [0xAF] = {movr, ADDRESSING_DIRECT},
     // MOV A, adr
     [0xE5] = {mova, ADDRESSING_DIRECT},
     // MOV A, @RI
@@ -29,5 +36,14 @@ instruction_t instructions[INSTRUCTION_COUNT] = {
     [0xEC] = {mova, ADDRESSING_REGISTER},
     [0xED] = {mova, ADDRESSING_REGISTER},
     [0xEE] = {mova, ADDRESSING_REGISTER},
-    [0xEF] = {mova, ADDRESSING_REGISTER}
+    [0xEF] = {mova, ADDRESSING_REGISTER},
+    // MOV Rn, A
+    [0xF8] = {movr, ADDRESSING_IMPLICIT},
+    [0xF9] = {movr, ADDRESSING_IMPLICIT},
+    [0xFA] = {movr, ADDRESSING_IMPLICIT},
+    [0xFB] = {movr, ADDRESSING_IMPLICIT},
+    [0xFC] = {movr, ADDRESSING_IMPLICIT},
+    [0xFD] = {movr, ADDRESSING_IMPLICIT},
+    [0xFE] = {movr, ADDRESSING_IMPLICIT},
+    [0xFF] = {movr, ADDRESSING_IMPLICIT}
 };  

@@ -10,6 +10,8 @@
 #define MEMORY_SIZE 0x10000
 static uint8_t xram[MEMORY_SIZE];
 
+// TODO: Create Read-Only Code Memory as well.
+
 int main(int argc, char *argv[]) {
     if (argc > 1 && !strcmp(argv[1], "--gui")) {
 #ifdef USE_GUI
