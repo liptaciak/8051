@@ -5,12 +5,13 @@
 
 #include "gui.h"
 #include "cpu.h"
-#include "memory.h"
 
 #define MEMORY_SIZE 0x10000
-static uint8_t xram[MEMORY_SIZE];
 
-// TODO: Create Read-Only Code Memory as well.
+static uint8_t rom[MEMORY_SIZE];
+
+// TODO: Not needed yet
+// static uint8_t xram[MEMORY_SIZE];
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && !strcmp(argv[1], "--gui")) {
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    size_t read = fread(xram, 1, filesize, program);
+    size_t read = fread(rom, 1, filesize, program);
     if (read != filesize) {
         fprintf(stderr, "Failed to read entire file (read %zu bytes)\n", read);
         fclose(program);
@@ -54,5 +55,5 @@ int main(int argc, char *argv[]) {
     cpu_t cpu = {0};
     cpu_reset(&cpu);
     
-    return cpu_execute_program(&cpu, xram);
+    return cpu_execute_program(&cpu, rom);
 }

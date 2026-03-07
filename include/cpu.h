@@ -48,14 +48,16 @@ typedef struct {
     uint16_t pc;           // Program Counter
 
     uint8_t ram[0x80];     // IRAM
-    /* 0x00-0x7F Label Description
-     *  0x00-0x1F R0-R7 Register Windows
-     *  0x20-0x2F       128 1-bit registers (00-7F)
-     *  0x30-0x7F       General purpose RAM
+    /* 
+     *  0x00-0x7F Internal RAM
+     *    0x00-0x1F R0-R7 Registers
+     *    0x20-0x2F       128 1-bit registers (00-7F)
+     *    0x30-0x7F       General purpose RAM
      */
 
     uint8_t sfr[0x80];     // SFR
-    /* 0x80-0xFF Special Function Registers 
+    /* 
+     *  0x80-0xFF Special Function Registers 
      *  Addresses divisible by 8 are bit-addressable
      */
 } cpu_t;  
@@ -140,6 +142,6 @@ typedef enum {
 } psw_t;
 
 void cpu_reset(cpu_t *cpu);
-int cpu_execute_program(cpu_t *cpu, uint8_t *xram);
+int cpu_execute_program(cpu_t *cpu, uint8_t *rom);
 
 #endif /* ! __CPU_H__ */

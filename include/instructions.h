@@ -7,12 +7,12 @@
 
 typedef enum {
 	ADDRESSING_IMPLICIT,          // The instruction has no operands
-	ADDRESSING_IMMEDIATE,         // Operand value is stored after the opcode
-	ADDRESSING_DIRECT,            // Operand value is stored in memory
-	ADDRESSING_REGISTER,          // Operand value is stored in a register
-	ADDRESSING_REGISTER_INDIRECT, // Operand value is stored in memory pointed by a register
-	ADDRESSING_BIT,               // Operand bit address is stored after the opcode
-	ADDRESSING_INDEXED            // Operand value is stored in ROM
+	ADDRESSING_IMMEDIATE,         // Operand is the actual value
+	ADDRESSING_DIRECT,            // Operand is the memory address (containing the value)
+	ADDRESSING_REGISTER,          // Operand is the value of a register (R0-R7)
+	ADDRESSING_REGISTER_INDIRECT, // Operand is the memory address pointed by a register (R0 or R1)
+	ADDRESSING_BIT,               // Operand is the bit address
+	ADDRESSING_INDEXED            // The instruction has no operands
 } addressing_mode_t;
 
 #include "instructions/nop.h"
@@ -21,9 +21,9 @@ typedef enum {
 #define INSTRUCTION_COUNT 0x100
 
 typedef struct {
-	// Opcode and addressing mode might not be needed
-	void (*implementation)(cpu_t *cpu, uint8_t opcode, uint8_t *operands, uint8_t *xram);
+	uint8_t opcode;
 	addressing_mode_t addressing_mode;
+	void (*implementation)(cpu_t *cpu, instruction_t instruction, uint8_t *operands);
 } instruction_t;
 
 extern instruction_t instructions[INSTRUCTION_COUNT];

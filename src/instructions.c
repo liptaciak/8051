@@ -5,6 +5,9 @@ instruction_t instructions[INSTRUCTION_COUNT] = {
     [0x00] = {nop, ADDRESSING_IMPLICIT},
     // MOV A, #value
     [0x74] = {mova, ADDRESSING_IMMEDIATE},
+    // MOV @RI, #value
+    [0x76] = {movri, ADDRESSING_IMMEDIATE},
+    [0x77] = {movri, ADDRESSING_IMMEDIATE},
     // MOV Rn, #value
     [0x78] = {movr, ADDRESSING_IMMEDIATE},
     [0x79] = {movr, ADDRESSING_IMMEDIATE},
@@ -14,6 +17,9 @@ instruction_t instructions[INSTRUCTION_COUNT] = {
     [0x7D] = {movr, ADDRESSING_IMMEDIATE},
     [0x7E] = {movr, ADDRESSING_IMMEDIATE},
     [0x7F] = {movr, ADDRESSING_IMMEDIATE},
+    // MOV @RI, adr
+    [0xA6] = {movri, ADDRESSING_DIRECT},
+    [0xA7] = {movri, ADDRESSING_DIRECT},
     // MOV Rn, adr
     [0xA8] = {movr, ADDRESSING_DIRECT},
     [0xA9] = {movr, ADDRESSING_DIRECT},
@@ -37,6 +43,9 @@ instruction_t instructions[INSTRUCTION_COUNT] = {
     [0xED] = {mova, ADDRESSING_REGISTER},
     [0xEE] = {mova, ADDRESSING_REGISTER},
     [0xEF] = {mova, ADDRESSING_REGISTER},
+    // MOV @RI, A
+    [0xF6] = {movri, ADDRESSING_IMPLICIT},
+    [0xF7] = {movri, ADDRESSING_IMPLICIT},
     // MOV Rn, A
     [0xF8] = {movr, ADDRESSING_IMPLICIT},
     [0xF9] = {movr, ADDRESSING_IMPLICIT},

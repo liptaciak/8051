@@ -42,6 +42,7 @@ void sfr_write_register(cpu_t *cpu, sfr_reg_t reg, uint8_t value) {
 
 // TODO: SFR bit registers
 
+/*
 uint8_t memory_read(cpu_t *cpu, uint8_t address) {
     if (address < 0x80) {
         return iram_read(cpu, address);
@@ -51,11 +52,13 @@ uint8_t memory_read(cpu_t *cpu, uint8_t address) {
 
     return 0;
 }
+*/
 
-uint8_t xram_read(uint8_t *xram, uint16_t address) {
-    return xram[address];
+// These functions will be used for ROM and XRAM
+uint8_t memory_read(uint8_t *memory, uint16_t address) {
+    return memory[address];
 }
 
-void xram_write(uint8_t *xram, uint16_t address, uint8_t value) {
-    xram[address] = value;
+void memory_write(uint8_t *memory, uint16_t address, uint8_t value) {
+    memory[address] = value;
 }
