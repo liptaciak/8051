@@ -15,16 +15,19 @@ typedef enum {
 	ADDRESSING_INDEXED            // The instruction has no operands
 } addressing_mode_t;
 
-#include "instructions/nop.h"
-#include "instructions/mov.h"
-
 #define INSTRUCTION_COUNT 0x100
 
-typedef struct {
+typedef struct instruction_t instruction_t;
+struct instruction_t {
+	addressing_mode_t dst_addressing_mode;
+	addressing_mode_t src_addressing_mode;
+	void (*implementation)(cpu_t *cpu, instruction_t instruction, uint8_t *dst, uint8_t src);
+	const char *format;
 	uint8_t opcode;
-	addressing_mode_t addressing_mode;
-	void (*implementation)(cpu_t *cpu, instruction_t instruction, uint8_t *operands);
-} instruction_t;
+};
+
+#include "instructions/nop.h"
+#include "instructions/mov.h"
 
 extern instruction_t instructions[INSTRUCTION_COUNT];
 

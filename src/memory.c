@@ -4,6 +4,11 @@
 #include "cpu.h"
 #include "memory.h"
 
+static uint8_t get_active_bank(cpu_t *cpu) {
+    uint8_t psw = sfr_read_register(cpu, REGISTER_PSW);
+    return (psw >> 3) & 0b11;
+}
+
 uint8_t iram_read(cpu_t *cpu, uint8_t address) {
     if (address >= 0x80) return 0;
     return cpu->ram[address];
@@ -14,21 +19,27 @@ void iram_write(cpu_t *cpu, uint8_t address, uint8_t value) {
     cpu->ram[address] = value;
 }
 
-uint8_t iram_read_register(cpu_t *cpu, iram_reg_t reg) {
-    uint8_t psw = sfr_read_register(cpu, REGISTER_PSW);
-    uint8_t active_bank = (psw >> 3) & 0b11;
+uint8_t *iram_ptr_register(cpu_t *cpu, iram_reg_t reg) {
+    uint8_t active_bank = get_active_bank(cpu);
+    return &cpu->ram[reg + 8 * active_bank];
+}
 
+uint8_t iram_read_register(cpu_t *cpu, iram_reg_t reg) {
+    uint8_t active_bank = get_active_bank(cpu);
     return cpu->ram[reg + 8 * active_bank];
 }
 
 void iram_write_register(cpu_t *cpu, iram_reg_t reg, uint8_t value) {
-    uint8_t psw = sfr_read_register(cpu, REGISTER_PSW);
-    uint8_t active_bank = (psw >> 3) & 0b11;
-
+    uint8_t active_bank = get_active_bank(cpu);
     cpu->ram[reg + 8 * active_bank] = value;
 }
 
 // TODO: IRAM bit registers
+
+uint8_t *sfr_ptr_register(cpu_t *cpu, sfr_reg_t reg) {
+    if (reg < 0x80 || reg > 0xFF) return nullptr;
+    return &cpu->sfr[reg - 0x80];
+}
 
 uint8_t sfr_read_register(cpu_t *cpu, sfr_reg_t reg) {
     if (reg < 0x80 || reg > 0xFF) return 0;
